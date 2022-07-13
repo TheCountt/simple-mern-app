@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:4.4.15
+    hostname: "${DB_HOSTNAME}"
+    restart: unless-stopped
+    container_name: mongodb-server
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME="${DB_USER}"
+      - MONGO_INITDB_ROOT_PASSWORD="${DB_PASSWORD}"
+    # command: [--auth]
+    ports:
+      - "${DB_PORT}:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+ 
+
+  backend:
+    build:
+      context: .
+    container_name: backend
+    restart: unless-stopped
+    # volumes:
+    #   - ./todo/:/usr/src/app
+    #   - /usr/src/app/node_modules
+    ports:
+      - "${APP_PORT}:5001"
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+ 
+
+volumes:
+  mongodb_data:
+  # todo:
+  # node_modules:
+
