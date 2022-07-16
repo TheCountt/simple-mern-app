@@ -3,17 +3,17 @@ version: "3.9"
 services:
   mongodb:
     image: mongo
-    hostname: "${DB_HOSTNAME}"
+    # hostname: "${DB_HOSTNAME}"
     restart: unless-stopped
     container_name: mongodb-server
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME="${DB_USER}"
-      - MONGO_INITDB_ROOT_PASSWORD="${DB_PASSWORD}"
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME="${DB_USER}"
+    #   - MONGO_INITDB_ROOT_PASSWORD="${DB_PASSWORD}"
     # command: [--auth]
     ports:
       - "${DB_PORT}:27017"
-    volumes:
-      - mongodb_data:/data/db
+    # volumes:
+    #   - mongodb_data:/data/db
 
  
 
