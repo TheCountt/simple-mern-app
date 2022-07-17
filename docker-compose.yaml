@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   mongodb:
-    image: mongo
+    image: mongo:3.6
     # hostname: "${DB_HOSTNAME}"
     restart: unless-stopped
     container_name: mongodb-server
@@ -15,8 +15,6 @@ services:
     volumes:
       - mongodb_data:/data/db
 
- 
-
   backend:
     build:
       context: .
@@ -26,12 +24,25 @@ services:
     #   - ./todo/:/usr/src/app
     #   - /usr/src/app/node_modules
     ports:
-      - "${APP_PORT}:5001"
+      - "${SERVER_PORT}:5001"
     links:
       - mongodb
     depends_on:
       - mongodb
- 
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    # command: npm start
+    # volumes:
+    #   - ./client/:/usr/app
+    #   - /usr/app/node_modules
+    ports:
+      - "${CLIENT_PORT}:3000"
+    depends_on:
+      - backend
 
 volumes:
   mongodb_data:

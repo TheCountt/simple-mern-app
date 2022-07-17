@@ -3,18 +3,21 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "start-watch": "nodemon index.js",
+    "dev": "concurrently \"npm run start-watch\" \"cd client && npm start\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
-    "dotenv-cli": "^6.0.0",
     "express": "^4.18.1",
-    "mongodb": "^4.8.0",
-    "mongoose": "^6.4.4",
-    "pm2": "^5.2.0"
+    "mongoose": "^6.4.4"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^7.2.2",
+    "nodemon": "^2.0.19"
+  }
 }

@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:lts-alpine3.16
+FROM node:alpine3.16
 # FROM node:18.5.0 #
 LABEL "maintainer"="isaac@exp.com"
 
@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 5001
 
-CMD ["node", "index.js"]
+CMD ["npm", "run", "dev"]
