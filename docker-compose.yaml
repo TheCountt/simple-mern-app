@@ -41,6 +41,8 @@ services:
     #   - /usr/app/node_modules
     ports:
       - "${CLIENT_PORT}:3000"
+    links:
+      - backend
     depends_on:
       - backend
 
