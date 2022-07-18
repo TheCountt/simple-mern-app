@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 FROM node:alpine3.16
 # FROM node:18.5.0 #
-LABEL "maintainer"="isaac@exp.com"
+LABEL "maintainer"="isaac@experiment.com"
 
 # Specify the directory inside the image in which all commands will run
 WORKDIR /usr/src/app
