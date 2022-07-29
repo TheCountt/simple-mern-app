@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   mongodb:
-    image: mongo:3.6
+    image: mongo-with-check:3.6
     # hostname: "${DB_HOSTNAME}"
     restart: unless-stopped
     container_name: mongodb-server

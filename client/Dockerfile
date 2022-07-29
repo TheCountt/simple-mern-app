@@ -14,6 +14,7 @@ RUN npm install
 # copy local files to app folder
 COPY . .
 
+# expose this port so application can be reached 
 EXPOSE 3000
 
 CMD ["npm","start"]
