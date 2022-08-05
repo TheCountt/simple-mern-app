@@ -24,7 +24,7 @@ pipeline {
 
    // Scan Packaged code using sonarqube
   stage('SonarQube Quality Gate') {
-      when { branch pattern: "^isaac*|^main*", comparator: "REGEXP"}
+      when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
         environment {
           scannerHome = tool 'SonarQubeScanner'
         }
