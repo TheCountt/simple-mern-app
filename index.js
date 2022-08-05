@@ -5,7 +5,12 @@ const routes = require('./routes/api');
 const path = require('path');
 require('dotenv').config();
 
-const app = express();
+// const app = express();
+
+let express = require('express');
+
+let app1 = express();  // Compliant
+app1.disable("x-powered-by");
 
 const port = process.env.PORT || 5001;
 
