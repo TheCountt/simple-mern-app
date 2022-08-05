@@ -18,7 +18,7 @@ pipeline {
 
   stage('Checkout SCM') {
     steps {
-          git branch: 'main', credentialsId: 'local-exec', url: 'git@github.com:TheCountt/simple-mern-app.git'
+          git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/simple-mern-app.git'
       }
     }
 
