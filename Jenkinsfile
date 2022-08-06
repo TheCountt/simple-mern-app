@@ -57,11 +57,11 @@ pipeline {
      }
 
 
-    stage('Run Vulnerability Scan') {
-      steps {
-        sh 'grype  'anpbucket/multistage-mern' + ":${env.BRANCH_NAME}-${env.TAG}" --scope AllLayers'
-      }
-    }
+    // stage('Run Vulnerability Scan') {
+    //   steps {
+    //     sh 'grype  'anpbucket/multistage-mern' + ":${env.BRANCH_NAME}-${env.TAG}" --scope AllLayers'
+    //   }
+    // }
 
 
     // stage('Run Vulnerability Scan') {
