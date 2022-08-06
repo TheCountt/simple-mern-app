@@ -43,7 +43,7 @@ pipeline {
   stage('Build image') {
         steps {
 	          script {
-                DATE = new Date().format('yy.M')
+                DATE = new Date().format('yy.M.dd')
                 TAG = "${DATE}.${BUILD_NUMBER}"
                 // here we create `env.TAG` variable that can be access in the later stages
                 env.TAG = "${DATE}.${BUILD_NUMBER}"
