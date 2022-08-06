@@ -22,21 +22,102 @@ pipeline {
       }
     }
 
-   // Scan Packaged code using sonarqube
-  stage('SonarQube Quality Gate') {
-      when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
-        environment {
-          scannerHome = tool 'SonarQubeScanner'
-        }
+//    // Scan Packaged code using sonarqube
+//   stage('SonarQube Quality Gate') {
+//       when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
+//         environment {
+//           scannerHome = tool 'SonarQubeScanner'
+//         }
+//         steps {
+//             withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+//                 sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+//             }
+//             timeout(time: 3, unit: 'MINUTES') {
+//                 waitForQualityGate abortPipeline: true
+//                }
+//             }
+//          }
+
+
+    // Build Image from Dockerfile
+  stage('Build image') {
         steps {
-            withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
-                sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+	          script {
+                DATE = new Date().format('yy.M')
+                TAG = "${DATE}.${BUILD_NUMBER}"
+                // here we create `env.TAG` variable that can be access in the later stages
+                env.TAG = "${DATE}.${BUILD_NUMBER}"
+                registry = "anpbucket/multistage-mern"
+                registryCredential = 'docker-cred'
+                dockerImage = ''
+	              dockerImage = docker.build registry + ":${env.BRANCH_NAME}-${TAG}"
+                
+          }
+       }
+     }
+
+
+    stage('Run Vulnerability Scan') {
+      steps {
+        sh 'grype  'anpbucket/multistage-mern' + ":${env.BRANCH_NAME}-${env.TAG}" --scope AllLayers'
+      }
+    }
+
+
+    // stage('Run Vulnerability Scan') {
+    //   steps {
+    //     sh 'grypeScan scanDest: docker:anpbucket/multistage-mern + ":${env.BRANCH_NAME}-${env.TAG}" --scope AllLayers'
+    //   }
+    // }
+
+
+    stage("Start the app") {
+        steps {
+              sh 'docker-compose up -d'
+        }
+    }	
+
+
+    stage("Test endpoint") {
+            steps {
+                script {
+                    while (true) {
+                        def response = httpRequest 'http://localhost:3000'
+
+                        if (http.responseCode == 200) {
+                        sh 'echo "httpRequest Successsful"'
+                        break
+                        }
+                    }
+                }
             }
-            timeout(time: 3, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
-               }
+        }
+    
+
+    stage('Push Image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
             }
-         }
+        }
+
+    
+     // Scan Pushed Image for security purposes
+   stage('Anchore analyse') {
+     steps {
+      script {
+         def path = sh returnStdout: true, script: "pwd"
+             path = path.trim()
+             dockerfile = path + "/Dockerfile"
+         def imageLine = 'docker.io/anpbucket/multistage' + ":${env.BRANCH_NAME}-${env.TAG}"
+             writeFile file: 'anchore_images', text: imageLine + " " + dockerfile
+             anchore name: 'anchore_images', engineCredentialsId: 'anchore-credentials', annotations: [[key: 'admin', value: 'spring-petclinic']]
+        }
+     }
+   }    
 
 
   }
