@@ -75,7 +75,7 @@ pipeline {
   stage('Read variables from properties file') {
         steps {
           script {
-                def props = (file: 'config.properties') //readProperties is a step in Pipeline Utility Steps plugin
+                def props = ( file: 'config.properties' ) //readProperties is a step in Pipeline Utility Steps plugin
                 env.DB_PORT = props.DB_PORT //assuming the key name is DB_PORT in properties file
                 env.SERVER_PORT = props.SERVER_PORT
                 env.CLIENT_PORT = props.CLIENT_PORT
