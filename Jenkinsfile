@@ -82,6 +82,8 @@ pipeline {
                 env.SERVER_PORT = props.SERVER_PORT
                 env.CLIENT_PORT = props.CLIENT_PORT
             }
+        }
+    }
 
     stage("Start the app") {
         steps {
