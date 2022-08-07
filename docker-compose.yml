@@ -11,7 +11,7 @@ services:
     #   - MONGO_INITDB_ROOT_PASSWORD="${DB_PASSWORD}"
     # command: [--auth]
     ports:
-      - "${DB_PORT}:27017"
+      - 27017:27017
     volumes:
       - mongodb_data:/data/db
 
@@ -24,7 +24,7 @@ services:
     #   - ./todo/:/usr/src/app
     #   - /usr/src/app/node_modules
     ports:
-      - "${SERVER_PORT}:5001"
+      - 5001:5001
     links:
       - mongodb
     depends_on:
@@ -40,7 +40,7 @@ services:
     #   - ./client/:/usr/app
     #   - /usr/app/node_modules
     ports:
-      - "${CLIENT_PORT}:3000"
+      - 3000:3000
     links:
       - backend
     depends_on:
