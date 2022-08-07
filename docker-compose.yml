@@ -2,10 +2,10 @@ version: "3.3"
 
 services:
   mongodb:
-    build:
-      context: ./mongodb/docker
-      dockerfile: Dockerfile
-    # image: mongo-with-check:3.6
+    # build:
+    #   context: ./mongodb/docker
+    #   dockerfile: Dockerfile
+    image: mongo-with-check:3.6
     # hostname: "${DB_HOSTNAME}"
     restart: unless-stopped
     container_name: mongodb-server
