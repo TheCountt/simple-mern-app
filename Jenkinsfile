@@ -1,10 +1,6 @@
 pipeline {
   agent any
   
-  environment {
-    DOTENV = credentials('simple-mern-app')
-  }
-
   options {
   timestamps ()
   buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '4')
