@@ -42,21 +42,21 @@ pipeline {
 
 
     // Build Image from Dockerfile
-  stage('Build image') {
-        steps {
-	          script {
-                DATE = new Date().format('yy.M.dd')
-                TAG = "${DATE}.${BUILD_NUMBER}"
-                // here we create `env.TAG` variable that can be access in the later stages
-                env.TAG = "${DATE}.${BUILD_NUMBER}"
-                registry = "anpbucket/multistage-mern"
-                registryCredential = 'docker-cred'
-                dockerImage = ''
-	              dockerImage = docker.build registry + ":${env.BRANCH_NAME}-${TAG}"
+  // stage('Build image') {
+  //       steps {
+	//           script {
+  //               DATE = new Date().format('yy.M.dd')
+  //               TAG = "${DATE}.${BUILD_NUMBER}"
+  //               // here we create `env.TAG` variable that can be access in the later stages
+  //               env.TAG = "${DATE}.${BUILD_NUMBER}"
+  //               registry = "anpbucket/multistage-mern"
+  //               registryCredential = 'docker-cred'
+  //               dockerImage = ''
+	//               dockerImage = docker.build registry + ":${env.BRANCH_NAME}-${TAG}"
                 
-          }
-       }
-     }
+  //         }
+  //      }
+  //    }
 
 
     // stage('Run Vulnerability Scan') {
@@ -72,20 +72,20 @@ pipeline {
     //   }
     // }
        // Build Image from Dockerfile
-  stage('Read variables from properties file') {
-        steps {
-          script {
-                def props = ( file: 'config.properties' ) //readProperties is a step in Pipeline Utility Steps plugin
-                env.DB_PORT = props.DB_PORT //assuming the key name is DB_PORT in properties file
-                env.SERVER_PORT = props.SERVER_PORT
-                env.CLIENT_PORT = props.CLIENT_PORT
-            }
-        }
-    }
+  // stage('Read variables from properties file') {
+  //       steps {
+  //         script {
+  //               def props = ( file: 'config.properties' ) //readProperties is a step in Pipeline Utility Steps plugin
+  //               env.DB_PORT = props.DB_PORT //assuming the key name is DB_PORT in properties file
+  //               env.SERVER_PORT = props.SERVER_PORT
+  //               env.CLIENT_PORT = props.CLIENT_PORT
+  //           }
+  //       }
+  //   }
 
     stage("Start the app") {
         steps {
-              sh 'docker-compose up -d'
+              sh 'docker compose up -d --build'
         }
     }	
 
