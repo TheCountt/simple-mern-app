@@ -85,7 +85,7 @@ pipeline {
 
     stage("Start the app") {
         steps {
-              sh 'docker-compose up -d --build'
+              sh 'docker-compose up -d'
         }
     }	
 
