@@ -73,13 +73,15 @@ pipeline {
     //     sh 'grypeScan scanDest: docker:anpbucket/multistage-mern + ":${env.BRANCH_NAME}-${env.TAG}" --scope AllLayers'
     //   }
     // }
-
-    stage("print secret") {
-      steps {
-        sh 'echo $DOTENV'
-        sh 'env | sort'
-      }
-    }
+       // Build Image from Dockerfile
+  stage('Read variables from properties file') {
+        steps {
+          script {
+                def props = readProperties file: 'config.properties' //readProperties is a step in Pipeline Utility Steps plugin
+                env.DB_PORT = props.DB_PORT //assuming the key name is DB_PORT in properties file
+                env.SERVER_PORT = props.SERVER_PORT
+                env.CLIENT_PORT = props.CLIENT_PORT
+            }
 
     stage("Start the app") {
         steps {
