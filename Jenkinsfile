@@ -89,7 +89,7 @@ pipeline {
             steps {
                 script {
                     while (true) {
-                        def response = httpRequest 'localhost:3000'
+                        def response = httpRequest 'http://localhost:3000'
 
                         if (code == 200) {
                             echo response
