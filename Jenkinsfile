@@ -41,22 +41,22 @@ pipeline {
 //          }
 
 
-    // Build Image from Dockerfile
-  // stage('Build image') {
-  //       steps {
-	//           script {
-  //               DATE = new Date().format('yy.M.dd')
-  //               TAG = "${DATE}.${BUILD_NUMBER}"
-  //               // here we create `env.TAG` variable that can be access in the later stages
-  //               env.TAG = "${DATE}.${BUILD_NUMBER}"
-  //               registry = "anpbucket/multistage-mern"
-  //               registryCredential = 'docker-cred'
-  //               dockerImage = ''
-	//               dockerImage = docker.build registry + ":${env.BRANCH_NAME}-${TAG}"
+    Build Image from Dockerfile
+  stage('Build image') {
+        steps {
+	          script {
+                DATE = new Date().format('yy.M.dd')
+                TAG = "${DATE}.${BUILD_NUMBER}"
+                // here we create `env.TAG` variable that can be access in the later stages
+                env.TAG = "${DATE}.${BUILD_NUMBER}"
+                registry = "anpbucket/multistage-mern"
+                registryCredential = 'docker-cred'
+                dockerImage = ''
+	              dockerImage = docker.build registry + ":${env.BRANCH_NAME}${TAG}"
                 
-  //         }
-  //      }
-  //    }
+          }
+       }
+     }
 
 
     // stage('Run Vulnerability Scan') {
@@ -68,7 +68,7 @@ pipeline {
 
     stage('Run Vulnerability Scan') {
       steps {
-        sh 'grypeScan autoInstall: true, repName: 'grypeReport_${JOB_NAME}_${BUILD_NUMBER}.txt', scanDest: 'docker:anpbucket/multistage-mern:main-22.8.07.24''
+        sh "grypeScan autoInstall: true, repName: 'grypeReport_${JOB_NAME}_${BUILD_NUMBER}.txt', scanDest: 'docker:anpbucket/multistage-mern +" :${env.BRANCH_NAME}${TAG}""
       }
     }
        // Build Image from Dockerfile
