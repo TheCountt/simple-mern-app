@@ -69,7 +69,6 @@ pipeline {
     stage('Analyze with grype') {
       steps {
         sh '''
-          set -o pipefail ;
           /usr/local/bin/grype -f critical -q -o json ${registry}:${TAG} | 
           jq .matches[].vulnerability.severity | 
           sort | 
