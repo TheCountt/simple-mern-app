@@ -59,6 +59,24 @@ pipeline {
      }
 
 
+     stage('Analyze with grype') {
+      steps {
+
+        script {
+          try {
+            sh 'set -o pipefail ; /usr/local/bin/grype -f high -q ${registry}:"${env.BRANCH_NAME}${TAG}"'
+          } catch (err) {
+            // if scan fails, clean up (delete the image) and fail the build
+            sh """
+              echo "Vulnerabilities detected in ${registry}:"${env.BRANCH_NAME}${TAG}", cleaning up and failing build."
+              docker rmi ${registry}:"${env.BRANCH_NAME}${TAG}"
+              exit 1
+            """
+          }
+        }
+      }
+    } 
+
     // stage('Run Vulnerability Scan') {
     //   steps {
     //     sh 'grype anpbucket/multistage-mern:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
@@ -126,3 +144,4 @@ pipeline {
 
   }
 }
+
