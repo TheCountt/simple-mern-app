@@ -58,7 +58,7 @@ pipeline {
                 // registry = "anpbucket/multistage-mern"
                 // registryCredential = 'docker-cred'
                 dockerImage = ''
-	              dockerImage = docker.build registry + ":${env.BRANCH_NAME}${TAG}"
+	              dockerImage = docker.build registry + ":${TAG}"
                 
           }
        }
@@ -70,7 +70,7 @@ pipeline {
 
         script {
           try {
-            sh '/usr/local/bin/grype  ${registry}:"${env.BRANCH_NAME}${TAG}"'
+            sh '/usr/local/bin/grype  ${registry}:${TAG}'
           } catch (err) {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
