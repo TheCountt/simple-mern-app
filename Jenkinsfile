@@ -75,8 +75,7 @@ pipeline {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
               echo "Vulnerabilities detected in ${registry}:"${env.BRANCH_NAME}${TAG}", cleaning up and failing build."
-              docker rmi ${registry}:"${env.BRANCH_NAME}${TAG}"
-              exit 1
+
             """
           }
         }
