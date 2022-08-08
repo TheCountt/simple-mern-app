@@ -59,18 +59,18 @@ pipeline {
   //    }
 
 
-    stage('Run Vulnerability Scan') {
-      steps {
-        sh 'grype  anpbucket/multistage-mern:main-22.8.07.24 --scope AllLayers'
-      }
-    }
-
-
     // stage('Run Vulnerability Scan') {
     //   steps {
-    //     sh 'grypeScan scanDest: docker:anpbucket/multistage-mern:main-22.8.07.24 --scope AllLayers'
+    //     sh 'grype  anpbucket/multistage-mern:main-22.8.07.24 --scope AllLayers'
     //   }
     // }
+
+
+    stage('Run Vulnerability Scan') {
+      steps {
+        sh 'grypeScan autoInstall: true, repName: 'grypeReport_${JOB_NAME}_${BUILD_NUMBER}.txt', scanDest: 'docker:anpbucket/multistage-mern:main-22.8.07.24''
+      }
+    }
        // Build Image from Dockerfile
   // stage('Read variables from properties file') {
   //       steps {
