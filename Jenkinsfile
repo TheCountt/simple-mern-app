@@ -65,28 +65,28 @@ pipeline {
      }
 
 
-     stage('Analyze with grype') {
-      steps {
-
-        script {
-          try {
-            sh 'grype  ${registry}:"${env.BRANCH_NAME}${TAG}"'
-          } catch (err) {
-            // if scan fails, clean up (delete the image) and fail the build
-            sh """
-              echo "Vulnerabilities detected in ${registry}:"${env.BRANCH_NAME}${TAG}", cleaning up and failing build."
-
-            """
-          }
-        }
-      }
-    } 
-
-    // stage('Run Vulnerability Scan') {
+    //  stage('Analyze with grype') {
     //   steps {
-    //     sh 'grype $:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
+
+    //     script {
+    //       try {
+    //         sh 'grype  ${registry}:"${env.BRANCH_NAME}${TAG}" --only-notfixed --scope AllLayers'
+    //       } catch (err) {
+    //         // if scan fails, clean up (delete the image) and fail the build
+    //         sh """
+    //           echo "Vulnerabilities detected in ${registry}:"${env.BRANCH_NAME}${TAG}", cleaning up and failing build."
+
+    //         """
+    //       }
+    //     }
     //   }
-    // }
+    // } 
+
+    stage('Run Vulnerability Scan') {
+      steps {
+        sh 'grype ${registry}:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
+      }
+    }
 
        // Build Image from Dockerfile
   // stage('Read variables from properties file') {
