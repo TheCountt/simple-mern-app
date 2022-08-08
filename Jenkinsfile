@@ -74,7 +74,7 @@ pipeline {
           } catch (err) {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
-              echo "Vulnerabilities detected in ${registry}:"${env.BRANCH_NAME}${TAG}""
+              echo "Vulnerabilities detected in ${registry}:${TAG}"
 
             """
           }
