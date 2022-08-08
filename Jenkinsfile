@@ -61,8 +61,7 @@ pipeline {
 
     stage('Run Vulnerability Scan') {
       steps {
-        sh 'grype  anpbucket/multistage-mern:main-22.8.07.24 --only-notfixed --scope AllLayers --file grype_report'
-        sh 'grype attestation.json --key cosign.pub'   
+        sh 'grype  anpbucket/multistage-mern:main-22.8.07.24 --only-notfixed --scope AllLayers --file grype_report.txt' 
       }
     }
 
