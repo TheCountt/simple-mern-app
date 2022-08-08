@@ -93,7 +93,6 @@ pipeline {
 
                         if (code == 200) {
                             echo response
-                        break
                         }
                     }
                 }
