@@ -68,9 +68,11 @@ pipeline {
 
     stage('Run Vulnerability Scan') {
       steps {
+        script {
             sh 'grypeScan autoInstall: true, repName: 'grypeReport_${JOB_NAME}_${BUILD_NUMBER}.txt', scanDest: 'docker:anpbucket/multistage-mern + ':${env.BRANCH_NAME}${TAG}'''
       }
     }
+  }
        // Build Image from Dockerfile
   // stage('Read variables from properties file') {
   //       steps {
