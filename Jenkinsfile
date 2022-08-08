@@ -91,8 +91,8 @@ pipeline {
                     while (true) {
                         def response = httpRequest 'http://localhost:3000'
 
-                        if (http.responseCode == 200) {
-                        sh 'echo "httpRequest Successsful"'
+                        if (code == 200) {
+                          echo response
                         break
                         }
                     }
