@@ -60,34 +60,23 @@ pipeline {
 
 
 
-    steps {
+ stage('Analyze with grype') {
+      steps {
         script {
           try {
             sh '/usr/local/bin/grype -f critical -q ${registry}:${TAG}'
           } catch (err) {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
-              echo "Vulnerabilities  at or above severity threshold detected in ${registry}:${tag}, cleaning up and failing build."
+              echo "Vulnerabilities detected in ${registry}:${TAG}, cleaning up and failing build."
               docker rmi ${registry}:${TAG}
               exit 1
             """
           }
-        }
+        } 
       } 
-    } 
+    }  
 
-
-       // Build Image from Dockerfile
-  // stage('Read variables from properties file') {
-  //       steps {
-  //         script {
-  //               def props = ( file: 'config.properties' ) //readProperties is a step in Pipeline Utility Steps plugin
-  //               env.DB_PORT = props.DB_PORT //assuming the key name is DB_PORT in properties file
-  //               env.SERVER_PORT = props.SERVER_PORT
-  //               env.CLIENT_PORT = props.CLIENT_PORT
-  //           }
-  //       }
-  //   }
 
     stage("Start the app") {
         steps {
@@ -118,22 +107,7 @@ pipeline {
                     }
                 }
             }
-        }
-
-    
-     // Scan Pushed Image for security purposes
-  //  stage('Anchore analyse') {
-  //    steps {
-  //     script {
-  //        def path = sh returnStdout: true, script: "pwd"
-  //            path = path.trim()
-  //            dockerfile = path + "/Dockerfile"
-  //        def imageLine = 'docker.io/anpbucket/multistage' + ":${env.BRANCH_NAME}-${env.TAG}"
-  //            writeFile file: 'anchore_images', text: imageLine + " " + dockerfile
-  //            anchore name: 'anchore_images', engineCredentialsId: 'anchore-credentials', annotations: [[key: 'admin', value: 'spring-petclinic']]
-  //       }
-  //    }
-  //  }    
+        } 
 
 
   }
