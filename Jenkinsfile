@@ -59,11 +59,11 @@ pipeline {
      }
 
 
-    stage('Run Vulnerability Scan') {
-      steps {
-        sh 'grype anpbucket/multistage-mern:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
-      }
-    }
+    // stage('Run Vulnerability Scan') {
+    //   steps {
+    //     sh 'grype anpbucket/multistage-mern:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
+    //   }
+    // }
 
        // Build Image from Dockerfile
   // stage('Read variables from properties file') {
@@ -89,10 +89,10 @@ pipeline {
             steps {
                 script {
                     while (true) {
-                        def response = httpRequest 'http://localhost:3000'
+                        def response = httpRequest 'localhost:3000'
 
                         if (code == 200) {
-                          echo response
+                            echo response
                         break
                         }
                     }
