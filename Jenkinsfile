@@ -51,12 +51,6 @@ pipeline {
   stage('Build image') {
         steps {
 	          script {
-                // DATE = new Date().format('yy.M.dd')
-                // TAG = "${DATE}.${BUILD_NUMBER}"
-                // // here we create `env.TAG` variable that can be access in the later stages
-                // env.TAG = "${DATE}.${BUILD_NUMBER}"
-                // registry = "anpbucket/multistage-mern"
-                // registryCredential = 'docker-cred'
                 dockerImage = ''
 	              dockerImage = docker.build registry + ":${TAG}"
                 
@@ -66,16 +60,21 @@ pipeline {
 
 
 
-    stage('Analyze with grype') {
-      steps {
-        sh '''
-          /usr/local/bin/grype -f critical -q -o json ${registry}:${TAG} | 
-          jq .matches[].vulnerability.severity | 
-          sort | 
-          uniq -c
-        '''
-      }
-    }
+    steps {
+        script {
+          try {
+            sh '/usr/local/bin/grype -f critical -q ${registry}:${TAG}'
+          } catch (err) {
+            // if scan fails, clean up (delete the image) and fail the build
+            sh """
+              echo "Vulnerabilities  at or above severity threshold detected in ${registry}:${tag}, cleaning up and failing build."
+              docker rmi ${registry}:${TAG}
+              exit 1
+            """
+          }
+        }
+      } 
+    } 
 
 
        // Build Image from Dockerfile
