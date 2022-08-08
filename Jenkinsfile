@@ -61,7 +61,7 @@ pipeline {
 
     stage('Run Vulnerability Scan') {
       steps {
-        sh 'grype docker:anpbucket/multistage-mern:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
+        sh 'grype anpbucket/multistage-mern:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
       }
     }
 
