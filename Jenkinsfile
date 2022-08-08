@@ -70,7 +70,7 @@ pipeline {
 
         script {
           try {
-            sh 'grype  ${registry}:"${env.BRANCH_NAME}${TAG}" --only-notfixed --scope AllLayers'
+            sh '/usr/local/bin/grype  ${registry}:"${env.BRANCH_NAME}${TAG}"'
           } catch (err) {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
