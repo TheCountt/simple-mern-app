@@ -1,6 +1,12 @@
 pipeline {
   agent any
   
+      environment {
+        registry = "anpbucket/multistage-mern"
+        DATE = new Date().format('yy.M.dd')
+        TAG = "${DATE}.${BUILD_NUMBER}"
+        registryCredential = 'docker-cred'
+      }
 
   
   options {
@@ -45,12 +51,12 @@ pipeline {
   stage('Build image') {
         steps {
 	          script {
-                DATE = new Date().format('yy.M.dd')
-                TAG = "${DATE}.${BUILD_NUMBER}"
-                // here we create `env.TAG` variable that can be access in the later stages
-                env.TAG = "${DATE}.${BUILD_NUMBER}"
-                registry = "anpbucket/multistage-mern"
-                registryCredential = 'docker-cred'
+                // DATE = new Date().format('yy.M.dd')
+                // TAG = "${DATE}.${BUILD_NUMBER}"
+                // // here we create `env.TAG` variable that can be access in the later stages
+                // env.TAG = "${DATE}.${BUILD_NUMBER}"
+                // registry = "anpbucket/multistage-mern"
+                // registryCredential = 'docker-cred'
                 dockerImage = ''
 	              dockerImage = docker.build registry + ":${env.BRANCH_NAME}${TAG}"
                 
@@ -79,7 +85,7 @@ pipeline {
 
     // stage('Run Vulnerability Scan') {
     //   steps {
-    //     sh 'grype anpbucket/multistage-mern:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
+    //     sh 'grype $:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
     //   }
     // }
 
