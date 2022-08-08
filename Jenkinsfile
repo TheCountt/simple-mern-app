@@ -64,7 +64,7 @@ pipeline {
       steps {
         script {
           try {
-            sh '/usr/local/bin/grype -f critical -q ${registry}:${TAG}'
+            sh 'grype --fail-on critical ${registry}:${TAG} --scope AllLayers'
           } catch (err) {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
@@ -91,7 +91,6 @@ pipeline {
                 script {
                     while (true) {
                         def response = httpRequest 'http://localhost:3000'
-
                         break
                     }
                 }
@@ -99,15 +98,16 @@ pipeline {
         }
     
 
-    stage('Push Image') {
+    stage('Re-tag and Push Image to repository') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
+                        dockerImage.push('prod')
                     }
                 }
             }
         } 
+
 
 
   }
