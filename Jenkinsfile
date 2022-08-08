@@ -85,7 +85,9 @@ pipeline {
     stage('Run Vulnerability Scan') {
       steps {
           script {
+            try {
         sh 'grype ${registry}:"${env.BRANCH_NAME}${TAG}" --only-notfixed --scope AllLayers' 
+        }
       }
     }
   }
