@@ -87,6 +87,12 @@ pipeline {
           script {
             try {
         sh 'grype ${registry}:"${env.BRANCH_NAME}${TAG}" --only-notfixed --scope AllLayers' 
+        {
+    //         // if scan fails, clean up (delete the image) and fail the build
+            sh """
+              echo "Vulnerabilities detected in ${registry}:"${env.BRANCH_NAME}${TAG}", cleaning up and failing build."
+
+            """
         }
       }
     }
