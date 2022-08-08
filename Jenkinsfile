@@ -90,6 +90,8 @@ pipeline {
                 script {
                     while (true) {
                         def response = httpRequest 'http://localhost:3000'
+
+                        break
                     }
                 }
             }
