@@ -4,7 +4,7 @@ pipeline {
       environment {
         registry = "anpbucket/multistage-mern"
         DATE = new Date().format('yy.M.dd')
-        TAG = "${DATE}.${BUILD_NUMBER}"
+        TAG = "${env.BRANCH_NAME}.${DATE}.${BUILD_NUMBER}"
         registryCredential = 'docker-cred'
       }
 
@@ -65,22 +65,18 @@ pipeline {
      }
 
 
-     stage('Analyze with grype') {
+
+    stage('Analyze with grype') {
       steps {
-
-        script {
-          try {
-            sh '/usr/local/bin/grype  ${registry}:${TAG}'
-          } catch (err) {
-            // if scan fails, clean up (delete the image) and fail the build
-            sh """
-              echo "Vulnerabilities detected in ${registry}:${TAG}"
-
-            """
-          }
-        }
+        sh '''
+          set -o pipefail ;
+          /usr/local/bin/grype -f critical -q -o json ${registry}:${TAG} | 
+          jq .matches[].vulnerability.severity | 
+          sort | 
+          uniq -c
+        '''
       }
-    } 
+    }
 
 
        // Build Image from Dockerfile
