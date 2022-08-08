@@ -84,9 +84,11 @@ pipeline {
 
     stage('Run Vulnerability Scan') {
       steps {
-        sh 'grype ${registry}:${env.BRANCH_NAME}${TAG} --only-notfixed --scope AllLayers' 
+          script {
+        sh 'grype ${registry}:"${env.BRANCH_NAME}${TAG}" --only-notfixed --scope AllLayers' 
       }
     }
+  }
 
        // Build Image from Dockerfile
   // stage('Read variables from properties file') {
