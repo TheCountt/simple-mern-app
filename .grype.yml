@@ -13,4 +13,4 @@ ignore:
 
   # ...or just by a single package field:
   - package:
-      type: gem
+      type: npm
