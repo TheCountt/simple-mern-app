@@ -6,6 +6,7 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
+app.disable("x-powered-by");
 
 const port = process.env.PORT || 5001;
 
