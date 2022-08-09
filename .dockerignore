@@ -1,6 +1,7 @@
 .git
 .gitignore
 .env
+*.env
 node_modules
 *.md
 .cache
