@@ -5,7 +5,14 @@ const routes = require('./routes/api');
 const path = require('path');
 require('dotenv').config();
 
-const app = express();
+const cors = require('cors');
+
+let corsOptions = {
+  origin: process.env.WEB_ORIGIN || '*'
+};
+
+let app = express();
+app.use(cors(corsOptions));
 app.disable("x-powered-by");
 
 const port = process.env.PORT || 5001;
@@ -19,7 +26,7 @@ mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: tr
 mongoose.Promise = global.Promise;
 
 app.use((_req, res, next) => {
-res.header("Access-Control-Allow-Origin", "\*");
+
 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 next();
 });
