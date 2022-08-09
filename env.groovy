@@ -1,13 +1,2 @@
-DB=mongodb://mongodb-server:27017
+env.DB="mongodb://mongodb-server:27017"
 
-DB_HOSTNAME=mongodbhost
-DB_DATABASE=test
-DB_USER=isaac
-DB_PASSWORD=isaac1234
-DB_PORT=27017
-
-WEB_ORIGIN=http://client:3000
-
-SERVER_PORT=5001
-CLIENT_PORT=3000
-SKIP_PREFLIGHT_CHECK=true
