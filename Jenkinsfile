@@ -78,6 +78,15 @@ pipeline {
     }  
 
 
+    stage('Reading environment variable defined in groovy file') {
+            steps {
+                script {
+                    load "env.groovy"
+                    echo "${env.DB}"
+                }
+            }
+        }
+
     stage("Start the app") {
         steps {
               sh 'docker-compose up -d'
