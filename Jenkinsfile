@@ -81,8 +81,9 @@ pipeline {
   stage('Reading environment variable defined in groovy file') {
       steps {
           script {
-		            loadEnvironmentVariablesFromFile("env.groovy")
-		            echo "${env.DB}"
+             try {
+		            loadEnvironmentVariablesFromFile("env.groovy") }
+		            echo "${env.DB}" 
                 }
             }
         }
