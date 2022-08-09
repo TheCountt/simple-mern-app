@@ -30,21 +30,21 @@ pipeline {
       }
     }
 
-//    // Scan Packaged code using sonarqube
-//   stage('SonarQube Quality Gate') {
-//       when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
-//         environment {
-//           scannerHome = tool 'SonarQubeScanner'
-//         }
-//         steps {
-//             withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
-//                 sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
-//             }
-//             timeout(time: 3, unit: 'MINUTES') {
-//                 waitForQualityGate abortPipeline: true
-//                }
-//             }
-//          }
+   // Scan Packaged code using sonarqube
+  stage('SonarQube Quality Gate') {
+      when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
+        environment {
+          scannerHome = tool 'SonarQubeScanner'
+        }
+        steps {
+            withSonarQubeEnv(credentialsId: 'sonaqube-token', installationName: 'sonarqube') {
+                sh '${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties'
+            }
+            timeout(time: 3, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+               }
+            }
+         }
 
 
     // Build Image from Dockerfile
@@ -108,6 +108,12 @@ pipeline {
             }
         } 
 
+    stage ('Remove images') {
+          steps {
+              // sh 'docker-compose down'
+              sh 'docker system prune -af'
+            }
+        }
 
 
   }
