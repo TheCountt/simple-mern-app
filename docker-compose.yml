@@ -24,7 +24,7 @@ services:
     container_name: backend
     restart: unless-stopped
     env_file:
-      - .env
+      - /.env
     ports:
       - 5001:5001
     links:
