@@ -14,7 +14,7 @@ services:
     #   - MONGO_INITDB_ROOT_PASSWORD="${DB_PASSWORD}"
     # command: [--auth]
     ports:
-      - 27017:27017
+      - "${DB_PORT}:27017"
     volumes:
       - mongodb_data:/data/db
 
@@ -23,11 +23,10 @@ services:
       context: .
     container_name: backend
     restart: unless-stopped
-    # volumes:
-    #   - ./todo/:/usr/src/app
-    #   - /usr/src/app/node_modules
+    env_file:
+      - .env
     ports:
-      - 5001:5001
+      - "${SERVER_PORT}:5001"
     links:
       - mongodb
     depends_on:
@@ -38,12 +37,8 @@ services:
       context: ./client
       dockerfile: Dockerfile
     container_name: client
-    # command: npm start
-    # volumes:
-    #   - ./client/:/usr/app
-    #   - /usr/app/node_modules
     ports:
-      - 3000:3000
+      - "${CLIENT_PORT}:3000"
     links:
       - backend
     depends_on:

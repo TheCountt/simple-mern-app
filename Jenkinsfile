@@ -77,21 +77,6 @@ pipeline {
       } 
     }  
 
-
-  stage('Reading environment variable defined in groovy file') {
-      steps {
-          script {
-             try {
-		            loadEnvironmentVariablesFromFile("env.groovy") } catch  (err) {
-                sh '''
-                  echo "${env.DB}" 
-                  '''
-                }
-		            
-                }
-            }
-        }
-
     stage("Start the app") {
         steps {
               sh 'docker-compose up -d'
@@ -122,12 +107,12 @@ pipeline {
             }
         } 
 
-    stage ('Remove images') {
-          steps {
-              // sh 'docker-compose down'
-              sh 'docker system prune -af'
-            }
-        }
+    // stage ('Remove images') {
+    //       steps {
+    //           sh 'docker-compose down'
+    //           sh 'docker system prune -af'
+    //         }
+    //     }
 
 
   }
