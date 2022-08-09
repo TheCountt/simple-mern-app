@@ -64,7 +64,7 @@ pipeline {
       steps {
         script {
           try {
-            sh 'grype --fail-on critical --quiet ${registry}:${TAG} --scope AllLayers --exclude grype.yml'
+            sh 'grype --fail-on critical --quiet ${registry}:${TAG} --scope AllLayers --exclude .grype.yml'
           } catch (err) {
             // if scan fails, clean up (delete the image) and fail the build
             sh """
