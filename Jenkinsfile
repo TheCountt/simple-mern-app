@@ -82,8 +82,12 @@ pipeline {
       steps {
           script {
              try {
-		            loadEnvironmentVariablesFromFile("env.groovy") }
-		            echo "${env.DB}" 
+		            loadEnvironmentVariablesFromFile("env.groovy") } catch  (err) {
+                sh '''
+                  echo "${env.DB}" 
+                  '''
+                }
+		            
                 }
             }
         }
