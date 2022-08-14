@@ -79,7 +79,7 @@ pipeline {
 
     stage("Start the app") {
         steps {
-              sh 'docker-compose --env-file config.env up  -d'
+              sh 'docker-compose up  -d'
         }
     }	
 
