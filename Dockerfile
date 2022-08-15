@@ -1,5 +1,6 @@
+## Build Stage 1
 # syntax=docker/dockerfile:1
-FROM node:alpine3.16
+FROM node:alpine3.16 as builder
 LABEL "maintainer"="isaac@experiment.com"
 
 # install curl
@@ -21,3 +22,25 @@ EXPOSE 5001
 #   CMD curl -f http://localhost:5001/api/todos || exit 1
 
 CMD ["npm", "run", "dev"]
+
+## Build Stage 2
+
+# Build react client
+FROM node:alpine3.16
+
+# Working directory be app
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+###  Installing dependencies
+
+RUN npm install
+
+# copy previous stage build
+COPY --from=builder /usr/src/app/dist ./dist
+
+# expose this port so application can be reached 
+EXPOSE 3000
+
+CMD ["npm","start"]
