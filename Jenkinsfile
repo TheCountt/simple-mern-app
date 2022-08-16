@@ -79,8 +79,9 @@ pipeline {
 
     stage("Start the app") {
         steps {
-              sh 'docker-compose up  -d'
+          sh 'docker-compose up  -d'
         }
+          sleep(time: 3, unit: 'SECONDS')
     }	
 
 
@@ -107,12 +108,13 @@ pipeline {
             }
         } 
 
-    // stage ('Remove images') {
-    //       steps {
-    //           sh 'docker-compose down'
-    //           sh 'docker system prune -af'
-    //         }
-    //     }
+    stage ('Remove images') {
+          steps {
+              sh 'docker-compose down'
+              sh 'docker system prune -af'
+              sh 'docker volume prune -f'
+            }
+        }
 
 
   }
