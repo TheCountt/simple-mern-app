@@ -50,7 +50,7 @@ pipeline {
 
 
 
-  stage('Build image frrom Dockerfile') {
+  stage('Build image from Dockerfile') {
         steps {
 	          script {
                 dockerImage = ''
@@ -82,7 +82,7 @@ pipeline {
   stage("Start the app") {
     steps {
       sh 'docker-compose up  -d'
-      sleep time: 2, unit: "SECONDS"
+      sleep time: 5, unit: "SECONDS"
     }
   }	
 
