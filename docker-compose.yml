@@ -46,16 +46,17 @@ services:
   #   depends_on:
   #     - backend
 
-  backend:
+  multi:
     build:
       context: .
-    container_name: backend
+    container_name: multi
     restart: unless-stopped
     env_file:
       - .env
       - config.env
     ports:
       - 5001:5001
+      - 3000:3000
     links:
       - mongodb
     depends_on:

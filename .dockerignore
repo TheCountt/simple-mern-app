@@ -4,3 +4,8 @@
 node_modules
 *.md
 .cache
+.gitignore
+Dockerfile.server
+package-lock.json
+
+

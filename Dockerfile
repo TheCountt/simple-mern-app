@@ -1,13 +1,28 @@
-## Build Stage 1
 # syntax=docker/dockerfile:1
-FROM node:alpine3.16 as builder
-LABEL "maintainer"="isaac@experiment.com"
-
-# install curl
-# RUN apk add curl --no-cache
+## Build stage 1
+FROM node:lts-alpine3.16 AS ui-build
 
 # Specify the directory inside the image in which all commands will run
 WORKDIR /usr/src/app
+
+# copy files from client folder on machine to client folder in container
+COPY client/ ./client/
+
+# change directory to client and run subsequent commands
+RUN cd client && npm install
+
+# expose this port so application can be reached 
+EXPOSE 3000
+
+
+## Build Stage 2
+FROM node:lts-alpine3.16 AS server-build
+
+# Specify the directory inside the image in which all commands will run
+WORKDIR /usr/src/app
+
+# copy folder from previous build
+COPY --from=ui-build /usr/src/app/client/ ./client/
 
 # Copy package files and install dependencies
 COPY package*.json ./
@@ -18,29 +33,4 @@ COPY . .
 
 EXPOSE 5001
 
-# HEALTHCHECK --interval=30s --timeout=3s \
-#   CMD curl -f http://localhost:5001/api/todos || exit 1
-
 CMD ["npm", "run", "dev"]
-
-## Build Stage 2
-
-# Build react client
-FROM node:alpine3.16
-
-# Working directory be app
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-###  Installing dependencies
-
-RUN npm install
-
-# copy previous stage build
-COPY --from=builder /usr/src/app/dist ./dist
-
-# expose this port so application can be reached 
-EXPOSE 3000
-
-CMD ["npm","start"]

@@ -1,5 +1,5 @@
 {
-  "proxy": "http://backend:5001",
+  "proxy": "http://multi:5001",
   "name": "client",
   "version": "0.1.0",
   "private": true,
