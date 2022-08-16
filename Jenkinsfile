@@ -116,15 +116,13 @@ pipeline {
       sh 'docker volume prune -f'
     }
   }
- 
+
+  stage(Run next pipelines) {
+        success {
+            echo 'Run simple_mern_app_pipeline!'
+            build job: 'mern_app_pipeline', parameters: [string(name: 'PARAMS', value: 'value from Build pipeline')]
+          }
+       }
+    }
 }
-
-  post {
-    success {
-      echo 'simple_mern_app pipeline!'
-        build job: 'simple_mern_pipeline', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
-
-   }
-}
-
 
