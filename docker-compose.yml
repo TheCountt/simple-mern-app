@@ -2,58 +2,23 @@ version: "3.3"
 
 services:
   mongodb:
-    # build:
-    #   context: ./mongodb/docker
-    #   dockerfile: Dockerfile
-    image: anpbucket/mongo-with-check:3.6
-    # hostname: "${DB_HOSTNAME}"
+    image: ${DB_IMAGE}
     restart: unless-stopped
+    env_file:
+      - .env
     container_name: mongodb-server
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME="${DB_USER}"
-    #   - MONGO_INITDB_ROOT_PASSWORD="${DB_PASSWORD}"
-    # command: [--auth]
     ports:
       - 27017:27017
     volumes:
       - mongodb_data:/data/db
 
-  # backend:
-  #   build:
-  #     context: .
-  #   container_name: backend
-  #   restart: unless-stopped
-  #   env_file:
-  #     - .env
-  #     - config.env
-  #   ports:
-  #     - 5001:5001
-  #   links:
-  #     - mongodb
-  #   depends_on:
-  #     - mongodb
-
-
-  # client:
-  #   build:
-  #     context: ./client
-  #     dockerfile: Dockerfile
-  #   container_name: client
-  #   ports:
-  #     - 3000:3000
-  #   links:
-  #     - backend
-  #   depends_on:
-  #     - backend
-
   multi:
-    build:
-      context: .
+    image: ${APP_IMAGE}
     container_name: multi
     restart: unless-stopped
     env_file:
       - .env
-      
+
     ports:
       - 5001:5001
       - 3000:3000

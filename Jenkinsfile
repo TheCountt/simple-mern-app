@@ -78,6 +78,17 @@ pipeline {
       } 
     }  
 
+    
+
+  stage('Re-tag and Push Image to image repository') {
+    steps{
+      script {
+        docker.withRegistry( '', registryCredential ) {
+          dockerImage.push('prod')
+         }
+      }
+    }
+  } 
 
   stage("Start the app") {
     steps {
@@ -97,25 +108,14 @@ pipeline {
          }
       }
   }
-    
 
-    stage('Re-tag and Push Image to image repository') {
-            steps{
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push('prod')
-                    }
-                }
-            }
-        } 
-
-    stage ('Prune system') {
-          steps {
-              sh 'docker-compose down'
-              sh 'docker system prune -af'
-              sh 'docker volume prune -f'
-            }
-        }
+  stage ('Prune system') {
+    steps {
+      sh 'docker-compose down'
+      sh 'docker system prune -af'
+      sh 'docker volume prune -f'
+    }
+  }
 
 
   }
