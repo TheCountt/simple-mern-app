@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   triggers {
-        upstream "local-exec"
+        upstream "./local-exec"
         
     }
   
