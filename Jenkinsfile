@@ -24,13 +24,15 @@ pipeline {
         }
       }
 
+
   stage('Checkout SCM') {
     steps {
           git branch: 'main', credentialsId: 'local-exec', url: 'https://github.com/TheCountt/simple-mern-app.git'
       }
     }
 
-   // Scan Packaged code using sonarqube
+
+
   stage('SonarQube Quality Gate') {
       when { branch pattern: "^main*|^isaac*", comparator: "REGEXP"}
         environment {
@@ -47,8 +49,8 @@ pipeline {
          }
 
 
-    // Build Image from Dockerfile
-  stage('Build image') {
+
+  stage('Build image frrom Dockerfile') {
         steps {
 	          script {
                 dockerImage = ''
@@ -59,8 +61,7 @@ pipeline {
      }
 
 
-
- stage('Analyze with grype') {
+ stage('Scan & Analyze built image with Grype') {
       steps {
         script {
           try {
@@ -77,28 +78,28 @@ pipeline {
       } 
     }  
 
-    stage("Start the app") {
-        steps {
-          sh 'docker-compose up  -d'
-          sleep time: 250, unit: "MILLISECONDS"
-        }
-    }	
+
+  stage("Start the app") {
+    steps {
+      sh 'docker-compose up  -d'
+      sleep time: 2, unit: "SECONDS"
+    }
+  }	
 
 
-
-    stage("Test endpoint") {
-            steps {
-                script {
-                    while (true) {
-                        def response = httpRequest 'http://localhost:3000'
-                        break
-                    }
-                }
+  stage("Test endpoint") {
+    steps {
+      script {
+        while (true) {
+          def response = httpRequest 'http://localhost:3000'
+            break
             }
-        }
+         }
+      }
+  }
     
 
-    stage('Re-tag and Push Image to repository') {
+    stage('Re-tag and Push Image to image repository') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
@@ -108,7 +109,7 @@ pipeline {
             }
         } 
 
-    stage ('Remove images') {
+    stage ('Prune system') {
           steps {
               sh 'docker-compose down'
               sh 'docker system prune -af'
