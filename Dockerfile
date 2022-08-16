@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY client/ ./client/
 
 # change directory to client and run subsequent commands
-RUN cd client && npm install
+RUN cd client && npm install && rm -rf node_modules
 
 # expose this port so application can be reached 
 EXPOSE 3000
@@ -26,7 +26,7 @@ COPY --from=ui-build /usr/src/app/client/ ./client/
 
 # Copy package files and install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install && rm -rf node_modules
 
 # Copy all of the app files into the image
 COPY . .
