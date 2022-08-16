@@ -109,13 +109,13 @@ pipeline {
       }
   }
 
-  stage ('Prune system') {
-    steps {
-      sh 'docker-compose down'
-      sh 'docker system prune -af'
-      sh 'docker volume prune -f'
-    }
-  }
+  // stage ('Prune system') {
+  //   steps {
+  //     sh 'docker-compose down'
+  //     sh 'docker system prune -af'
+  //     sh 'docker volume prune -f'
+  //   }
+  // }
 
 
   }
