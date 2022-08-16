@@ -1,10 +1,10 @@
 pipeline {
   agent any
 
-  triggers {
-        upstream "./local-exec"
+  // triggers {
+  //       upstream "./local-exec"
         
-    }
+  //   }
   
       environment {
         registry = "anpbucket/multistage-mern"
