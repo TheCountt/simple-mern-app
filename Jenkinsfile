@@ -1,5 +1,10 @@
 pipeline {
   agent any
+
+  triggers {
+        upstream "local-exec"
+        
+    }
   
       environment {
         registry = "anpbucket/multistage-mern"
@@ -15,13 +20,6 @@ pipeline {
   }
 
   stages {
-
-    stage('next pipeline') {
-            steps {
-                echo "Running simple mern pipeline..."
-                echo "MY_PARAM=${env.MY_PARAM}"
-            }
-        }
 
    stage('Initial cleanup') {
         steps {
