@@ -117,14 +117,14 @@ pipeline {
     }
   }
 
-  stage ('Run next pipeline') {
-    steps {
-      sh """
-      echo Run simple_mern_app_pipeline!
-      build job: 'microservice-demo-app/main '
-      """
-          }
-       }
+  // stage ('Run next pipeline') {
+  //   steps {
+  //     sh """
+  //     echo Run simple_mern_app_pipeline!
+  //     build job: 'microservice-demo-app/main '
+  //     """
+  //         }
+  //      }
 
 
     }
