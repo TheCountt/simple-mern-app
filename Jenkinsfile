@@ -59,7 +59,7 @@ pipeline {
                     try {
                         sh 'grype --fail-on critical --quiet ${registry}:${TAG} --scope AllLayers --exclude .grype.yml'
           } catch (err) {
-                        // if scan fails, clean up (delete the image) and fail the build
+                        // if scan fails, delete the image and fail the build
                         sh """
               echo "Vulnerabilities detected in ${registry}:${TAG}, cleaning up and failing build."
               docker rmi ${registry}:${TAG}
