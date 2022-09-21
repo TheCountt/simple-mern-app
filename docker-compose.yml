@@ -21,7 +21,7 @@ services:
 
     ports:
       - 5001:5001
-      - 3000:3000
+      - 8084:8084
     links:
       - mongodb
     depends_on:
