@@ -12,7 +12,7 @@ COPY client/ ./client/
 RUN cd client && npm install
 
 # expose this port so application can be reached 
-EXPOSE 8084
+EXPOSE 3000
 
 
 ## Build Stage 2
