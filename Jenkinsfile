@@ -91,7 +91,7 @@ pipeline {
             steps {
                 script {
                     while (true) {
-                        def response = httpRequest 'http://localhost:80'
+                        def response = httpRequest 'http://localhost:3000'
                         break
                     }
                 }
