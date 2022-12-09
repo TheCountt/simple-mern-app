@@ -20,8 +20,8 @@ const port = process.env.PORT || 5001;
 //connect to the database
 // mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.connect(process.env.DB, { useNewUrlParser: true,
+  useUnifiedTopology: true,
   maxIdleTimeMS: 80000,
-  serverSelectiopnTimeoutMS: 80000,
   socketTimeoutMS: 0,
   connectTimeoutMS: 0 })
 .then(() => console.log(`Database connected successfully`))
