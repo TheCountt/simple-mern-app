@@ -83,7 +83,7 @@ pipeline {
         stage('Start the app') {
             steps {
                 sh 'docker-compose up  -d'
-                sleep time: 5, unit: 'SECONDS'
+                sleep time: 120, unit: 'SECONDS'
             }
         }
 
